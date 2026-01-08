@@ -51,8 +51,16 @@ if __name__ == '__main__': //independente do nome do seu arquivo, de forma inter
 *Prática - Definindo o novo Projeto*
 1 - Criamos uma nova pasta e geramos o ambiente virtual 
 2 - Criamos o arquivo 'models.py' e importamos algumas classes
-3 - Criamos o arquivo main e criamos um dicionário de cursos 
+3 - Criamos o arquivo 'main.py' e criamos um dicionário de cursos 
 4 - Criamos a entrada no código para ele recarregar de forma automática
+
+- O arquivo models é responsável por definir os modelos de dados da aplicação.
+Ele representa a estrutura das tabelas do banco de dados e é utilizado pelo ORM (Mapeamento Objeto-Relacional) para realizar consultas e manipulações de dados de forma mais prática.
+Cada classe definida em models corresponde a uma tabela do banco de dados, e cada atributo da classe representa uma coluna dessa tabela.
+- O arquivo main é o arquivo principal da aplicação, responsável por inicializar e configurar a API.
+É nele que a aplicação é criada e onde são registradas rotas, configurações e dependências.
+Quando a aplicação é executada diretamente por esse arquivo, o bloco
+if __name__ == "__main__" é utilizado para iniciar o servidor.
 
 -> Resolvendo o problema de importação que surgiu: as importações não estavam funcionando no código. 
 A solução encontrada é porque o interpretador estava errado então fizemos o seguinte: 
@@ -60,3 +68,4 @@ ctrl + shift + P;
 digitar 'python'
 selecionar a opção de 'escolher interpretador'
 selecionar o interpretador instalado no ambiente virtual
+
