@@ -108,3 +108,32 @@ async def get_curso(curso_id : int):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Curso não encontrado.')
 
 Colocamos o 'try' como a primeira opção e caso ocorra um erro lançamos 'raise' escolhendo o código do erro (neste caso foi 404) e detalhamos o que foi o erro. Neste caso é quando um curso não foi encontrado (lançamos um ID que ainda não foi criado no dicionário).
+
+*Prática - O Método POST*
+A primeira coisa que fazemos no arquivo 'main.py' é importar a classe que criamos no arquivo 'models'.
+
+from models import Curso
+
+Depois disso criamos o próximo endpoint:
+
+@app.post('/cursos', status_code=status.HTTP_201_CREATED)
+async def post_curso(curso: Curso):
+    next_id: int = len(cursos) + 1
+    cursos[next_id] = curso
+    del curso.id
+    return curso 
+
+Neste exemplo acessamos o método POST, e definimos o código de status no próprio end point, ele vai retornar o código caso dê certo!
+Em baixo estamos definindo umna função assíncrona chamada 'post_curso' que recebe um objeto 'curso' do tipo 'Curso' -> (curso: Curso)
+Depois criamos a variável 'next_id' que é do tipo inteiro e será o nosso 'contador' para definir o número do próximo id.
+Acessamos o próximo lugar do dicionário 'cursos', já criado no nosso arquivo 'main', com a variável 'next_id' e adicionamos as informações enviadas via método POST.
+Apagamos o id de curso apenas por causa da vizualização do servidor na hora de imputar os dados.
+Ele retorna o dicionário 'curso', agora com as novas informações imputadas.
+
+Para utilizarmos o método POST, temos que enviar os dados usando JSON da seguinte forma:
+
+{
+    "titulo": 'Aula X',
+    "aulas": 54,
+    "horas": 12
+}
