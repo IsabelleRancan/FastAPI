@@ -137,3 +137,39 @@ Para utilizarmos o método POST, temos que enviar os dados usando JSON da seguin
     "aulas": 54,
     "horas": 12
 }
+
+*Prática - O Método PUT*
+O PUT é utilizado para atualizar algo já existente
+
+@app.put('/cursos/{curso_id}')
+async def put_curso(curso_id: int, curso: Curso):
+    if curso_id in cursos:
+        cursos[curso_id] = curso
+        del curso.id
+
+        return curso
+    else:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f'Não existe um curso com o id {curso_id}')
+
+A aplicação do método post assemelha-se muito ao método GET. Primeiro passamos a URI com o espaço para receber o ID.
+Na definição da função, já definimos que vamos receber um ID e as informações de um novo curso, que será um objetoda classe 'Curso'. Como já definimos quais são os padrões do nosso dicionário 
+no arquivo models, não precisamos nos preocupar com os atributos obrigatórios ou em definir a estrutura do que vai ser informado.
+No início da função fazemos uma verificação se o id informado existe no nosso dicionário, se existir ele vai substituir as informações existentes pelas informadas agora.
+O 'del curso.id'é apenas um tratamente para aexibição do novo dicionário. 
+Caso o id informado não seja econtrado, lança-se uma excessão.
+
+*Prática - O Método DELETE*
+
+@app.delete('/cursos/{curso_id}')
+async def delete_curso(curso_id: int):
+    if curso_id in cursos:
+        del cursos[curso_id]
+        return Response(status_code=status.HTTP_204_NO_CONTENT)
+    else:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f'Não existe um curso com o id {curso_id}')
+
+Uma função sempre retorna alguma coisa, por isso vamos fazer a seguinte importação:
+
+from fastapi import Response
+
+Essa importação permite que retornemos a resposta quando o método 'delete' dá certo.
