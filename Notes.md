@@ -173,3 +173,22 @@ Uma função sempre retorna alguma coisa, por isso vamos fazer a seguinte import
 from fastapi import Response
 
 Essa importação permite que retornemos a resposta quando o método 'delete' dá certo.
+
+*Prática - Path Parameters*
+
+O que é o Path? O path é o parametro que passamos na URI após o endpoint.
+O Path é uma espécie de validação a mais que implementamos dentro da nossa URI para limitar algumas coisas.
+
+from fastapi import Path
+
+Vamos aplicar o Path Parameters dentro do nosso método GET:
+
+@app.get('cursos/{curso_id}')
+async def get_curso(curso_id : int = Path(default=None, title='ID do curso', description='Deve ser entre 1 e 2', gt=0, lt=3))
+    try:
+        curso = cursos[curso_id]
+        return curso
+    except KeyError:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Curso não encontrado.')
+
+A única coisa obrigatória nos Path Parameters é o uso do default, todo o resto é opcional, no caso do exemplo, estamos definindo um título e uma descfrição para que isso apareça na documentação, depois utilizamos o 'Greather Then' e 'Lower Then' para definirmos o intervalo dos números que serão aceitos.
