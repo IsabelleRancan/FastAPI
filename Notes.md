@@ -192,3 +192,33 @@ async def get_curso(curso_id : int = Path(default=None, title='ID do curso', des
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Curso não encontrado.')
 
 A única coisa obrigatória nos Path Parameters é o uso do default, todo o resto é opcional, no caso do exemplo, estamos definindo um título e uma descfrição para que isso apareça na documentação, depois utilizamos o 'Greather Then' e 'Lower Then' para definirmos o intervalo dos números que serão aceitos.
+
+*Prática - Query Parameters*
+
+Os Query Parameters geralmente não são tão utilizados nas APIs. Na maioria das vezes utilizamos os Path parêmeters para definir os tipos e limitações de dados para a nossa URI. 
+Já os Query parêmeters são uma espécie de 'filtro' que aplicamos para exibirmos os dados. 
+
+Path Parameters: Integrados ao caminho da URL, geralmente entre barras (/) e podem ser definidos com marcadores como {id} no backend.
+Query Parameters: Após um ponto de interrogação (?), com múltiplos parâmetros separados por &.
+
+Como aplicamos no backend?
+Vamos criar uma função aleatória, apenas para testarmos o uso.
+
+from fatsapi import Query
+
+@app.get('/calculadora')
+async def calcular(a: int = Query(default+None, gt=5), b: int = Query(default=None, gt=10), c: Optional [int] = None)
+    soma: int = a + b
+    if c:
+        soma = soma + c
+
+    return {"resultado": soma}
+
+Note que criamos uma função get, a função get serve para retornar e não para salvar informações, como então vamos passar os valores para essa soma? Através dos Query Parameters na URL
+
+...../calculadora?a=6&b=2&c=5
+
+Estamos passando os vaores de A, B e C.
+Lembrando que este é apenas um exemplo prático de como funciona e não a forma ideal ou a mais utilizada no cootidiano já que o uso de Query geralmente é feito para filtragem, busca e ordenação de resultados. 
+
+*Prática - Header Parameters*
