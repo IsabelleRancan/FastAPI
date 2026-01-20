@@ -241,3 +241,45 @@ async def calcular(a: int = Query(default+None, gt=5), b: int = Query(default=No
     return {"resultado": soma}
 
 Lembrando que este trexo de código é apenas um exemplo de aplicação e utilização. 
+
+*Prática - Injeção de Dependências*
+
+As Dependências são arquivos ou trexos do código, do qual a nossa API depende para funcionar corretamente. Para injetarmos essas dependencias no código, utilizamos a injeção de dependências.
+
+Nesta aula, a primeira coisa que fazemos são as importações e a criação de uma função para simular a conexão com um Banco de Dados.
+
+from fastapi import Depends
+from time import sleep
+
+O trexo de código abaixo foi feito logo abaixo das importações do código, e antes da inicialização de 'app com FastAPI'.
+
+def fake_db():
+    try:
+        print('Abrindo conexão com banco de dados...')
+        sleep(1)
+    finally:
+        print('Fechando conexão com banco de dados...')
+        sleep(1)
+
+Agora colocamos essa dependência em todas as funções com métodos em nosso código. Ex:
+
+from typing import Any
+
+@app.get('/cursos')
+async def get_cursos(db: Any = Depends(fake_db)):
+    return cursos
+
+*colocamos o trecho 'db: Any = Depends(fake_db)'.
+
+Isso faz com que nosso código teste a conexão com as dependências antes de executar a função.
+
+*Prática - Revisando os Docs*
+Nesta aula aprendemos a customizar a nossa documentação gerada automáticamente pela FastAPI. 
+
+Criamos descrições explicações melhores na instancia de FastAPI e no método GET. 
+
+Além disso, removemos a nossa variável 'cursos' do arquivo main e salvamos no arquivo 'models'. 
+
+Podemos personalizar e alterar as descrições de todo o código.
+
+**Anotar as alterações feitas em aula**
