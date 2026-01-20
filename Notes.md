@@ -222,3 +222,22 @@ Estamos passando os vaores de A, B e C.
 Lembrando que este é apenas um exemplo prático de como funciona e não a forma ideal ou a mais utilizada no cootidiano já que o uso de Query geralmente é feito para filtragem, busca e ordenação de resultados. 
 
 *Prática - Header Parameters*
+Ao contrário dos Query Parameters ou Path Parameters, o Header não aparece na nossa URL/URI, na verdade ele contém informações adicionais que são enviadas 'escondidas' no cabeçalho das requisiões. Esse tipo de parametro é ideal para informações de controle e segurança como tokens de acesso, controle da cachê etc.
+
+primeiro fazemos a importação de Header:
+
+from fastapi import Header
+
+Agora adicionamos Header na nossa função de calculadora, definindo sempre o 'default' que é obrigatório: 
+
+@app.get('/calculadora')
+async def calcular(a: int = Query(default+None, gt=5), b: int = Query(default=None, gt=10), x_geek: str = Header(default=None), c: Optional [int] = None)
+    soma: int = a + b
+    if c:
+        soma = soma + c
+
+    print(f'X-GEEK: {x_geek})
+
+    return {"resultado": soma}
+
+Lembrando que este trexo de código é apenas um exemplo de aplicação e utilização. 
