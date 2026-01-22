@@ -276,10 +276,37 @@ Isso faz com que nosso código teste a conexão com as dependências antes de ex
 *Prática - Revisando os Docs*
 Nesta aula aprendemos a customizar a nossa documentação gerada automáticamente pela FastAPI. 
 
-Criamos descrições explicações melhores na instancia de FastAPI e no método GET. 
+Criamos descrições e explicações melhores na instancia de FastAPI e no método GET. 
 
-Além disso, removemos a nossa variável 'cursos' do arquivo main e salvamos no arquivo 'models'. 
+app = FastAPI(
+    title='API de Curso para aprendizado!',
+    version='0.0.1',
+    description='Uma API para estudo do FastAPI'
+    )
+
+@app.get('/cursos', 
+    description='Retorna todos os cursos ou uma lista vazia.', 
+    summary='Retorna todos os cursos.', 
+    response_model=List[Curso],
+    response_description='Cursos encontrados com sucesso!')
+async def get_cursos(db: Any = Depends(fake_db)):
+    return cursos
+
+Agora no método POST:
+
+@app.post('/cursos', status_code=status.HTTP_201_CREATED, response_model=Curso)
+async def post_curso(curso: Curso, db: Any = Depends(fake_db)):
+    next_id: int = len(next_id) + 1
+    cursos[next_id] = curso
+    del curso.id
+    return curso
+
+Além disso, removemos a nossa variável 'cursos' do arquivo main e salvamos no arquivo 'models' como uma lista
+
+Agora importamos a nossa lista mokada em models:
+
+from models import cursos
 
 Podemos personalizar e alterar as descrições de todo o código.
 
-**Anotar as alterações feitas em aula**
+**Passar as alterações para os arquivos main e models**

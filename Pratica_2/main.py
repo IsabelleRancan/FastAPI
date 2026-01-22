@@ -1,4 +1,4 @@
-from typing import Any
+from typing import List, Optional, Any
 
 from fastapi import Path
 
@@ -10,6 +10,7 @@ from fastapi import Depends
 from time import sleep
 
 from models import Curso
+from models import cursos
 
 def fake_db():
     try:
@@ -20,19 +21,6 @@ def fake_db():
         sleep(1)
 
 app = FastAPI()
-
-cursos = {
-    1: {
-        "titulo" : "aula 1",
-        "aulas" : 10,
-        "horas" : 58
-    },
-    2: {
-        "titulo" : "aula 2",
-        "aulas" : 12,
-        "horas" : 40
-    }
-}
 
 @app.get('/cursos')
 async def get_cursos(db: Any = Depends(fake_db)):
