@@ -11,6 +11,11 @@ Instalando fast api e uvicorn (servidor para executar códigos assíncronos)
 -> pip freeze > requirements.txt
 -> deactivate
 
+Formas de inicializar a API:
+-> python (nome_do_arquivo).py
+-> ctrl + c
+-> uvicorn main:app --reload
+
 *versão fastapi utilizada 0.75.2
 (pra instalar essa versão pip install fastapi==0.75.2)
 *versão uvicorn 0.17.6

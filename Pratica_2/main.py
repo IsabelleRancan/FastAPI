@@ -27,7 +27,7 @@ async def get_cursos(db: Any = Depends(fake_db)):
     return cursos
 
 @app.get('/cursos/{curso_id}')
-async def get_curso(curso_id : int = Path(default=None, title='ID do curso', description='Deve ser entre 1 e 2', gt=0, lt=3), db: Any = Depends(fake_db)):
+async def get_curso(curso_id : int = Path(..., title='ID do curso', description='Deve ser entre 1 e 2', gt=0, lt=3), db: Any = Depends(fake_db)):
     try: 
         curso = cursos[curso_id]
         return curso
@@ -60,4 +60,4 @@ async def delete_curso(curso_id: int, db: Any = Depends(fake_db)):
 if __name__ == '__main__':
     import uvicorn
 
-    uvicorn.run("main.app", host="0.0.0.0", port=8000, debug=True, reload=True)
+    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
