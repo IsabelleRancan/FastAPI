@@ -315,3 +315,85 @@ from models import cursos
 Podemos personalizar e alterar as descrições de todo o código.
 
 **Passar as alterações para os arquivos main e models**
+
+*Prática - Definindo Rotas*
+Vamos aprender a organizar a nossa API. Pra isso, criamos outra pasta, dentro dela criamos:
+Pratica_02_pt1>routes>
+                curso_router.py/usuario_router.py
+    main.py/requirements.txt
+
+Não precisamos criar um novo ambiente virtual, podemos continuar usando o mesmo do outro projeto.
+
+No arquivo curso_router.py:
+
+from fastapi import APIRouter
+
+router = APIRouter()
+
+@router.get('/api/v1/cursos')
+async def get_cursos():
+    return {'info': 'Todos os cursos'}
+
+usuaruio_router.py:
+
+from fastapi import APIRouter
+
+router = APIRouter()
+
+@router.get('/api/v1/usuarios')
+async def get_usuarios():
+    return {'info': 'Todos os usuarios'}
+
+main.py:
+
+from fastapi import FastAPI
+
+from routes import curso_router
+from routes import usuario_router
+
+app = FastAPI
+app.include_router(curso_router.router, tags=['cursos']) //essa tag serve para identificarmos a rota de cada um na documentação ao invés de ficar escrito 'default'
+app.include_router(usuario_router.router, tags=['usuarios'])
+
+if __name__ == '__main__':
+    import uvicorn
+
+    uvicorn.run("main:app", host="0.0.0.0", port=8000, debug=True, reload=True)
+
+**Copiar do outro main criado**
+
+*Prática - Validação Customizada Pydantic*
+*Voltando na Prática_2_pt1
+
+Modificando o POST:
+
+@app.post('/cursos', status_code=status.HTTP_201_CREATED)
+-> async def post_curso(curso: Curso):
+    next_id: int = len(next_id) + 1
+    -> curso.id = next_id
+    -> cursos.append(curso)
+    return curso
+
+E agora? Como fazer uma validação no nosso POST?
+
+No arquivo 'models.py'
+from pydantic import BaseModel, validator
+
+agora, dentro da classe Curso adicionamos em baixo de tudo:
+
+#pra cada atributo criamos uma função e dentro dessa função fazemos todas as validações necessárias com os 'if'.
+
+@validator('titulo')
+def validar_titulo(cls, value: str):
+    palavras = value.split(' ')
+    if len(palavras) < 3:
+        raise ValueError('O título deve ter pelo menos 3 palavras.')
+
+    if value.islower():
+        raise ValueError('O título deve ser em maiúsculo')
+
+        return value
+
+**Fazer a validação com aulas e horas: aulas mais de 12 e horas mais de 10**
+
+*Passar as alterações para o código principal a partir da linha 281 - Docs*
