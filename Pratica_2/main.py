@@ -20,9 +20,17 @@ def fake_db():
         print('Fechando conexão com banco de dados...')
         sleep(1)
 
-app = FastAPI()
+app = FastAPI(
+    title='API de Curso para aprendizado!',
+    version='0.0.1',
+    description= 'Uma API para estudo do FastAPI'
+)
 
-@app.get('/cursos')
+@app.get('/cursos', 
+         description='Retorna todos os cursos ou uma lista vazia.',
+         summary='Retorna todos os cursos.',
+         response_model=List[Curso],
+         response_description='Cursos encontrados com sucesso!')
 async def get_cursos(db: Any = Depends(fake_db)):
     return cursos
 
@@ -34,8 +42,8 @@ async def get_curso(curso_id : int = Path(..., title='ID do curso', description=
     except KeyError: 
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Curso não encontrado.')
     
-@app.post('/cursos', status_code=status.HTTP_201_CREATED)
-async def post_curso(curso: Curso, db: Any = Depends(fake_db)):
+@app.post('/cursos', status_code=status.HTTP_201_CREATED, response_model=Curso)
+async def post_curso(curso: Curso):
     next_id: int = len(next_id) + 1
     curso.id = next_id
     cursos.append(curso)

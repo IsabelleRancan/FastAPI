@@ -314,11 +314,9 @@ from models import cursos
 
 Podemos personalizar e alterar as descrições de todo o código.
 
-**Passar as alterações para os arquivos main e models**
-
 *Prática - Definindo Rotas*
 Vamos aprender a organizar a nossa API. Pra isso, criamos outra pasta, dentro dela criamos:
-Pratica_02_pt1>routes>
+Pratica_02_v2>routes>
                 curso_router.py/usuario_router.py
     main.py/requirements.txt
 
@@ -330,7 +328,7 @@ from fastapi import APIRouter
 
 router = APIRouter()
 
-@router.get('/api/v1/cursos')
+@router.get('/api/v2/cursos')
 async def get_cursos():
     return {'info': 'Todos os cursos'}
 
@@ -340,7 +338,7 @@ from fastapi import APIRouter
 
 router = APIRouter()
 
-@router.get('/api/v1/usuarios')
+@router.get('/api/v2/usuarios')
 async def get_usuarios():
     return {'info': 'Todos os usuarios'}
 
@@ -358,9 +356,7 @@ app.include_router(usuario_router.router, tags=['usuarios'])
 if __name__ == '__main__':
     import uvicorn
 
-    uvicorn.run("main:app", host="0.0.0.0", port=8000, debug=True, reload=True)
-
-**Copiar do outro main criado**
+    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
 
 *Prática - Validação Customizada Pydantic*
 *Voltando na Prática_2_pt1
@@ -376,7 +372,8 @@ Modificando o POST:
 
 E agora? Como fazer uma validação no nosso POST?
 
-No arquivo 'models.py'
+No arquivo 'models.py':
+
 from pydantic import BaseModel, validator
 
 agora, dentro da classe Curso adicionamos em baixo de tudo:
@@ -395,5 +392,3 @@ def validar_titulo(cls, value: str):
         return value
 
 **Fazer a validação com aulas e horas: aulas mais de 12 e horas mais de 10**
-
-*Passar as alterações para o código principal a partir da linha 281 - Docs*
