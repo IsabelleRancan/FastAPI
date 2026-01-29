@@ -392,3 +392,81 @@ def validar_titulo(cls, value: str):
         return value
 
 **Fazer a validação com aulas e horas: aulas mais de 12 e horas mais de 10**
+
+***************************************
+*Prática - Criando a Estrutura do Projeto*
+Criamos uma nova pasta e criamos um ambiente virtual pra ele.
+
+Depois disso fazemos as seguintes instalações:
+
+pip install fastapi psycopg2-binary sqlalchemy asyncpg uvicorn
+pip freeze > requirements.txt
+
+Criamos alguns diretórios dentro desse novo projeto:
+api
+core - é a pasta onde colocamos nossos arquivos comuns em uma API
+models
+schemas - é a pasta onde transformamos um arquivo SQL ou Python em JSON para que a API possa trabalhar. Esse processo é chamado de 'cerealização' e 'descerealização'.
+
+Além disso criamos mais dois arquivos dentro do diretório principal:
+criar_tabelas.py
+main.py
+
+*Prática - Trabalhando no Módulo Core*
+Dentro deste módulo criamos alguns arquivos:
+
+configs.py - configurações gerais que vamos utilizar em todo o projeto
+database.py - banco de dados que vamos utilizar
+deps.py - dependencias do nosso projeto
+
+Em 'configs.py':
+
+from pydantic import BaseSettings
+from sqlalchemy.ext.declarative importe declarative_base
+
+class Settings(BaseSettings):
+    """
+    Configurações gerais usadas na aplicação
+    """
+    API_V1_STR: str = '/api/v1'
+    DB_URL: str = 'postgresql+asyncpg://(usuario:senha)@localhost:5432/(nomedobd)' - como eu vou fazer isso?
+    DBBaseModel = declarative_base()
+
+    class Config:
+        case_sensitive = True
+
+settings = Settings() - instanciando esse objeto, depois eu chamo ele em qualquer lugar e ele vai ter acesso a essas configurações
+
+Em 'database.py':
+
+from sqlalchemy.orm import sessionmaker 
+from sqlalchemy.ext.asyncio import create_async_engine
+from sqlalchemy.ext.asyncio import AsyncEngine
+from sqlalchemy.ext.asyncio import AsyncSession
+
+from core.configs import settings
+
+engine: AsyncEngine = create_async_engine(settings.DB_URL)
+
+Session: AsyncSession = sessionmaker(
+    autocommit=False,
+    autoflush=False,
+    expire_on_commit=Flase,
+    class_=AsyncSession,
+    bind=engine
+)
+
+Em 'deps.py':
+from typing import Generator
+
+from sqlalchemy.ext.asyncio import AsyncSession
+
+from core.databaase import Session
+
+async def get_session() -> Generator:
+    session: AsyncSession = Session()
+
+    try:
+        yield session
+    finally:
+        await session.close() - lembrar de sempre fechar as conexões com o BD
